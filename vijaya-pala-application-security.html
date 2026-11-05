@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="light dark" />
+<meta name="description" content="Vijaya Krishna Pala — application security manager in Mechanicsburg, Pennsylvania. Notes on three things I have built: AI-assisted triage of scanner findings, document intake, and automated browser testing." />
+<link rel="icon" href="data:," />
+<title>Vijaya Pala — Application Security</title>
+<style>
+  :root{
+    --bg:#fdfdfa;
+    --text:#23282a;
+    --muted:#5c6468;
+    --faint:#8a9296;
+    --rule:#dddeda;
+    --link:#17573a;
+    --link-hover:#0d3d27;
+    --note-bg:#f4f4ee;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#17191a;
+      --text:#e3e6e2;
+      --muted:#a7ada8;
+      --faint:#7e8580;
+      --rule:#333739;
+      --link:#8fc7a8;
+      --link-hover:#b5ddc7;
+      --note-bg:#1f2223;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;background:var(--bg);color:var(--text);
+    font-family:Georgia, "Times New Roman", serif;
+    font-size:17.5px;line-height:1.72;
+    -webkit-font-smoothing:antialiased;
+  }
+  .sans{font-family:-apple-system, "Segoe UI", Helvetica, Arial, sans-serif}
+  a{color:var(--link);text-underline-offset:3px}
+  a:hover{color:var(--link-hover)}
+  ::selection{background:var(--link);color:var(--bg)}
+
+  .page{max-width:700px;margin:0 auto;padding:0 22px 30px}
+
+  header.top{padding:52px 0 0}
+  h1{
+    font-size:2.15rem;line-height:1.15;font-weight:700;margin:0 0 8px;letter-spacing:-.01em;
+  }
+  .who{color:var(--muted);font-size:1.06rem;margin:0 0 26px}
+  nav.plain{
+    font-family:-apple-system, "Segoe UI", Helvetica, Arial, sans-serif;font-size:.86rem;
+    border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);
+    padding:9px 0;display:flex;flex-wrap:wrap;gap:6px 22px;
+  }
+  nav.plain a{color:var(--muted);text-decoration:none}
+  nav.plain a:hover{color:var(--text);text-decoration:underline;text-underline-offset:3px}
+
+  main{padding-top:10px}
+  section{padding:26px 0 6px}
+  h2{
+    font-size:1.32rem;line-height:1.25;margin:0 0 14px;font-weight:700;
+  }
+  h3{font-size:1.13rem;line-height:1.3;margin:30px 0 8px;font-weight:700}
+  h3:first-of-type{margin-top:6px}
+  p{margin:0 0 15px}
+  .muted{color:var(--muted)}
+  ul{margin:0 0 15px;padding-left:22px}
+  li{margin-bottom:7px}
+  li::marker{color:var(--faint)}
+
+  .note{
+    background:var(--note-bg);padding:14px 18px;margin:20px 0 22px;font-size:.97rem;
+  }
+  .note p{margin:0}
+
+  hr.sep{border:none;border-top:1px solid var(--rule);margin:34px 0 0}
+
+  dl.tools{margin:0 0 8px}
+  dl.tools div{margin-bottom:12px}
+  dl.tools dt{
+    font-family:-apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    font-size:.8rem;font-weight:600;color:var(--muted);margin-bottom:1px;
+  }
+  dl.tools dd{margin:0}
+
+  .certs{list-style:none;padding:0;margin:0 0 10px}
+  .certs li{margin-bottom:10px;padding-left:0}
+  .certs .org{color:var(--muted);font-size:.93rem}
+
+  footer{
+    margin-top:44px;border-top:1px solid var(--rule);padding-top:16px;
+    color:var(--faint);font-size:.88rem;
+    font-family:-apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    display:flex;flex-wrap:wrap;gap:4px 20px;justify-content:space-between;
+  }
+  @media(max-width:560px){
+    body{font-size:16.5px}
+    header.top{padding-top:36px}
+    h1{font-size:1.8rem}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="top" id="top">
+    <h1>Vijaya Krishna Pala</h1>
+    <p class="who">Application security manager. Mechanicsburg, Pennsylvania.</p>
+    <nav class="plain" aria-label="Page sections">
+      <a href="#projects">Things I&rsquo;ve built</a>
+      <a href="#background">Background</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section aria-label="Introduction">
+      <p>I&rsquo;ve spent the last eight years in application security, and a good while writing software before that, mostly C# and .NET. The development background is hard to shake, and I think it makes me better at this job: a finding is only useful if the person who has to fix it can understand it and act on it.</p>
+      <p>For the past four years I&rsquo;ve led application security for a large public-sector eligibility systems estate, the software behind Medicaid, SNAP, and TANF. It is high-volume and document-heavy, parts of it are old, and when something goes wrong it affects real households. That tends to concentrate the mind.</p>
+      <p>This page is mostly about three pieces of work I designed and built there. They are not grand projects. Each one came out of a specific annoyance, and each one keeps a person, not a tool, responsible for the decision at the end.</p>
+    </section>
+
+    <hr class="sep" />
+
+    <section id="projects">
+      <h2>Things I&rsquo;ve built</h2>
+
+      <h3>Help with triaging scanner findings</h3>
+      <p>GitHub Advanced Security does the scanning on this estate: CodeQL for code scanning, Dependabot for vulnerable dependencies, secret scanning for leaked credentials. It works well. It also produces more alerts than a small team can read carefully, and the quality of triage is what suffers first. People start skimming. That is how a real finding gets waved through.</p>
+      <p>So I built a pipeline to do the reading before a person does. GitHub Actions checks the code out at a pinned commit, so every scan is tied to an exact version and can be re-run against the same code later. A model then goes through the findings, starting with the ones on known-vulnerable components, and writes each one up in a fixed format: where it is, the code that supports it, the reasoning, and how it lines up against what GitHub Advanced Security itself reported. Agree, new, or disputed.</p>
+      <div class="note">
+        <p>One rule I was not willing to bend: the model never closes a finding, and it never commits code. It writes notes. A person reads them and decides, and GitHub Advanced Security stays the system of record. The day the tool starts deciding is the day reviewers stop reading its output properly.</p>
+      </div>
+      <p>What it actually buys is time. Reviewers open a finding that already has its evidence assembled and spend their attention judging it instead of hunting for context. That is a modest claim, but it is the whole point.</p>
+
+      <h3>Reading the documents people send in</h3>
+      <p>Eligibility work runs on paper. People send in pay stubs, letters, forms, and someone has to pull the relevant numbers off them. I built an intake step on Azure Document Intelligence that reads documents like pay stubs and extracts named fields, things like employer, pay period, and gross pay, each with a confidence score attached.</p>
+      <p>The confidence score is the part that matters. A clean read goes downstream as structured data. A shaky one is visible as shaky, and gets looked at by a person instead of silently becoming a wrong number in a case file. Raw OCR dumped into the next system would have been easier to build and worse in every way that counts.</p>
+
+      <h3>Browser tests that run themselves</h3>
+      <p>The third piece is the least glamorous. I wrote Selenium tests for the journeys people actually take through these systems, logins, form submissions, the paths caseworkers and applicants use daily, and wired them into GitHub Actions so they run the same way on every build. Failures show up in the pipeline, next to the change that caused them, instead of surfacing weeks later in a manual test cycle.</p>
+      <p>One boundary, stated plainly because it is easy to get lazy about: the tests run on synthetic data only. They never touch production data. The test data is made up for the purpose, end to end.</p>
+    </section>
+
+    <hr class="sep" />
+
+    <section id="background">
+      <h2>Background</h2>
+      <p>The day job behind those projects is the full program: owning static analysis and its triage, dynamic testing, and following findings through to remediation with the development teams. I also cover the estate&rsquo;s document imaging side, Datacap and FileNet, which is where scanned eligibility documents enter the system and a place where security problems like to hide.</p>
+      <p>The tools I work with day to day:</p>
+      <dl class="tools">
+        <div>
+          <dt>Static analysis</dt>
+          <dd>GitHub Advanced Security (CodeQL, Dependabot, secret scanning), Fortify, Veracode</dd>
+        </div>
+        <div>
+          <dt>Dynamic testing</dt>
+          <dd>Burp Suite</dd>
+        </div>
+        <div>
+          <dt>Build and CI</dt>
+          <dd>GitHub, GitHub Actions, Maven</dd>
+        </div>
+        <div>
+          <dt>Development</dt>
+          <dd>C# / .NET</dd>
+        </div>
+        <div>
+          <dt>Documents</dt>
+          <dd>Datacap, FileNet, Azure Document Intelligence</dd>
+        </div>
+        <div>
+          <dt>Test automation</dt>
+          <dd>Selenium, synthetic data only</dd>
+        </div>
+      </dl>
+    </section>
+
+    <hr class="sep" />
+
+    <section id="certifications">
+      <h2>Certifications</h2>
+      <ul class="certs">
+        <li><strong>CISM</strong> <span class="org">&mdash; Certified Information Security Manager, ISACA</span></li>
+        <li><strong>CCSK</strong> <span class="org">&mdash; Certificate of Cloud Security Knowledge, Cloud Security Alliance</span></li>
+        <li><strong>PMP</strong> <span class="org">&mdash; Project Management Professional, PMI</span></li>
+        <li><strong>GH-500</strong> <span class="org">&mdash; GitHub Advanced Security, Microsoft / GitHub</span></li>
+        <li><strong>Security+</strong> <span class="org">&mdash; CompTIA Security+ (SY0-701)</span></li>
+      </ul>
+      <p class="muted">The GH-500 is the one most directly tied to the work above. It covers exactly the tooling the scanning pipeline is built on.</p>
+    </section>
+
+    <hr class="sep" />
+
+    <section id="contact">
+      <h2>Contact</h2>
+      <p>I don&rsquo;t put my phone number or email address on the open web. If you want to talk about application security work, or compare notes on scanner triage, <a href="https://www.linkedin.com/in/vjpala" target="_blank" rel="noopener noreferrer">message me on LinkedIn</a>. That is the reliable way to reach me.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>&copy; 2026 Vijaya Krishna Pala</span>
+    <span>Mechanicsburg, PA &middot; Updated November 2026</span>
+  </footer>
+
+</div>
+</body>
+</html>
